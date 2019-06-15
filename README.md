@@ -14,3 +14,7 @@ Test of GLBoost
 ### Particle
 
 [![GLBoost + Particle を試してみるテスト](jsdo.it/cx20/assets/screenshot/gj2y.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/gj2y/)
+
+### 惑星
+
+[![GLBoost で地球に雲を表示してみるテスト](jsdo.it/cx20/assets/screenshot/K3ez.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/K3ez/)
