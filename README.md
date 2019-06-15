@@ -1,7 +1,7 @@
 ﻿# glboost-test
 Test of GLBoost
 
-﻿## GLBoost サンプル
+## GLBoost サンプル
 
 ### LiquidFun
 
