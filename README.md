@@ -18,3 +18,5 @@ Test of GLBoost
 ### 惑星
 
 [![GLBoost で地球に雲を表示してみるテスト](jsdo.it/cx20/assets/screenshot/K3ez.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/K3ez/)
+
+[![GLBoost で火星を表示させてみるテスト](jsdo.it/cx20/assets/screenshot/a3pkc.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/a3pkc/)
