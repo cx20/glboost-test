@@ -32,3 +32,7 @@ Test of GLBoost
 [![GLBoost + Oimo.js で将棋の駒を落下させてみるテスト](jsdo.it/cx20/assets/screenshot/4whf.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/4whf/)
 
 [![GLBoost + Oimo.js で箱をランダムに落下させてみるテスト](jsdo.it/cx20/assets/screenshot/Ili6.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/Ili6/)
+
+### PBR
+
+[![GLBoost で PBR を試してみるテスト](jsdo.it/cx20/assets/screenshot/YYjT.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/YYjT/)
