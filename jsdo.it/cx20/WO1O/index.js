@@ -19,7 +19,7 @@ function init()
         up: new GLBoost.Vector3(0.0, 1.0, 0.0)
     }, {
         fovy: 45.0,
-        aspect: 1.0,
+        aspect: width/height,
         zNear: 0.1,
         zFar: 1000.0
     });
