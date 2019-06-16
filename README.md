@@ -41,3 +41,6 @@ Test of GLBoost
 
 [![GLBoost で PBR を試してみるテスト（その３）](jsdo.it/cx20/assets/screenshot/Ml8A.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/Ml8A/)
 
+### ３次元曲線
+
+[![GLBoost でリサージュ図形を描いてみるテスト](jsdo.it/cx20/assets/screenshot/WO1O.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/WO1O/)
