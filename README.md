@@ -27,3 +27,5 @@ Test of GLBoost
 
 [![GLBoost + Oimo.js でモデルを落下させてみるテスト](jsdo.it/cx20/assets/screenshot/Kx37.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/Kx37/)
 
+[![GLBoost + Oimo.js で坂道にボール転がしてみるテスト](jsdo.it/cx20/assets/screenshot/45Wj.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/45Wj/)
+
