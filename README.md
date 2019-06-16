@@ -39,3 +39,5 @@ Test of GLBoost
 
 [![GLBoost で PBR を試してみるテスト（その２）](jsdo.it/cx20/assets/screenshot/E756.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/E756/)
 
+[![GLBoost で PBR を試してみるテスト（その３）](jsdo.it/cx20/assets/screenshot/Ml8A.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/Ml8A/)
+
