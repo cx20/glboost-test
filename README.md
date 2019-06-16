@@ -44,3 +44,5 @@ Test of GLBoost
 ### ３次元曲線
 
 [![GLBoost でリサージュ図形を描いてみるテスト](jsdo.it/cx20/assets/screenshot/WO1O.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/WO1O/)
+
+[![GLBoost でハーモノグラフを描いてみるテスト](jsdo.it/cx20/assets/screenshot/Ugq6.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/Ugq6/)
