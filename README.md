@@ -29,3 +29,4 @@ Test of GLBoost
 
 [![GLBoost + Oimo.js で坂道にボール転がしてみるテスト](jsdo.it/cx20/assets/screenshot/45Wj.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/45Wj/)
 
+[![GLBoost + Oimo.js で将棋の駒を落下させてみるテスト](jsdo.it/cx20/assets/screenshot/4whf.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/4whf/)
