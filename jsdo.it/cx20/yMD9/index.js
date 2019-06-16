@@ -1,8 +1,6 @@
 ﻿// setup GLBoost renderer
 let width = window.innerWidth;
 let height = window.innerHeight;
-
-// setup GLBoost renderer
 let canvas = document.getElementById("world");
 let glBoostContext = new GLBoost.GLBoostMiddleContext(canvas);
 
@@ -25,15 +23,16 @@ let geometryCube = glBoostContext.createCube(new GLBoost.Vector3(3, 3, 3), new G
 let material = glBoostContext.createPBRMetallicRoughnessMaterial();
 material.shaderClass = GLBoost.PBRPrincipledShader;
 // https://www.cgbookcase.com/textures/brick-wall-02
-let urlBase = "https://rawcdn.githack.com/cx20/jsdo-static-contents/2e26d2e3787eef8301ec72393978d3d835024a3c/";
+let urlBase = "https://rawcdn.githack.com/cx20/jsdo-static-contents/89194aefe92cf7111cbac116f6f0bfb194b65503/";
 let texture          = glBoostContext.createTexture(urlBase + 'textures/Brick_wall_02_1K_Base_Color.jpg');
 let textureAO        = glBoostContext.createTexture(urlBase + 'textures/Brick_wall_02_1K_AO.jpg');
 let textureNormal    = glBoostContext.createTexture(urlBase + 'textures/Brick_wall_02_1K_Normal.jpg');
-let textureRoughness = glBoostContext.createTexture(urlBase + 'textures/Brick_wall_02_1K_Roughness.jpg');
+//let textureRoughness = glBoostContext.createTexture(urlBase + 'textures/Brick_wall_02_1K_Roughness.jpg');
+let textureORM = glBoostContext.createTexture(urlBase + 'textures/Brick_wall_02_1K_ORM.jpg');
 material.setTexture(texture);
 material.setTexture(textureAO, GLBoost.TEXTURE_PURPOSE_OCCLUSION);
 material.setTexture(textureNormal, GLBoost.TEXTURE_PURPOSE_NORMAL);
-material.setTexture(textureRoughness, GLBoost.TEXTURE_PURPOSE_METALLIC_ROUGHNESS);
+material.setTexture(textureORM, GLBoost.TEXTURE_PURPOSE_METALLIC_ROUGHNESS);
 
 let meshCube = glBoostContext.createMesh(geometryCube, material);
 //meshSphere.translate = new GLBoost.Vector3((r-0.5)*4, (m-0.5)*4, 0.0);
