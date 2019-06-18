@@ -92,14 +92,26 @@ function populate() {
     let d;
 
     let i = max;
-    let scale = 50;
+    let scale = 0.5;
     
-    let glTFLoader = GLBoost.GLTFLoader.getInstance();
-    let promise = glTFLoader.loadGLTF(glBoostContext, 'https://rawcdn.githack.com/KhronosGroup/glTF-Sample-Models/77f1a295e65c3a59c7131e6a15552c69817c9449/1.0/Duck/glTF/Duck.gltf', null); // duck.gltf
+    let glTF2Loader = GLBoost.GLTF2Loader.getInstance();
+    let modelConverter = GLBoost.ModelConverter.getInstance();
+    var url = "https://rawcdn.githack.com/KhronosGroup/glTF-Sample-Models/77f1a295e65c3a59c7131e6a15552c69817c9449/2.0/Duck/glTF/Duck.gltf";
+    let promise = glTF2Loader.loadGLTF(url, {
+          extensionLoader: null,
+          defaultShader: GLBoost.PhongShader,
+          isNeededToMultiplyAlphaToColorOfPixelOutput: true,
+          isTextureImageToLoadPreMultipliedAlpha: false,
+          isExistJointGizmo: false,
+          isBlend: false,
+          isDepthTest: true,
+          isAllMeshesTransparent: false
+        });
 
-    promise.then(function(group) {
-        group.scale = new GLBoost.Vector3(scale, scale, scale);
-        let mesh0 = group.searchElement("LOD3spShape-lib");
+    promise.then(function(gltfObj) {
+        let group0 = modelConverter.convertToGLBoostModel(glBoostContext, gltfObj);
+        let mesh0 = group0.allMeshes[0];
+        mesh0.scale = new GLBoost.Vector3(scale, scale, scale);
 
         while (i--){
             x = -50 + Math.random()*100;
@@ -128,7 +140,6 @@ function populate() {
             scene.addChild(groupMeshs[i]);
             scene.addChild(wireMeshs[i]);
         }
-
         // loop
         expression = glBoostContext.createExpressionAndRenderPasses(1);
         expression.renderPasses[0].scene = scene;
