@@ -2,11 +2,13 @@
 let width = window.innerWidth;
 let height = window.innerHeight;
 let canvas = document.getElementById("world");
+let glBoostContext = new GLBoost.GLBoostMiddleContext(canvas);
 let renderer;
 let camera;
 let scene;
 let groupMeshs = [];
 let wireMeshs = [];
+let expression;
 
 //oimo var
 let world;
@@ -25,13 +27,17 @@ function init() {
     stats.domElement.style.top      = "5px";
     document.body.appendChild(stats.domElement);
 
-    scene = new GLBoost.Scene();
-    renderer = new GLBoost.Renderer({
-        canvas: canvas,
-        clearColor: {red: 0, green: 0, blue: 0, alpha: 1}
+    scene = glBoostContext.createScene();
+    renderer  = glBoostContext.createRenderer({
+      clearColor: {
+        red: 0.0,
+        green: 0.0,
+        blue: 0.0,
+        alpha: 1
+      }
     });
     renderer.resize(width, height);
-    camera = new GLBoost.Camera({
+    camera = glBoostContext.createPerspectiveCamera({
         eye: new GLBoost.Vector3(0, 200, 400),
         center: new GLBoost.Vector3(0.0, 0.0, 0.0),
         up: new GLBoost.Vector3(0.0, 1.0, 0.0)
@@ -41,10 +47,12 @@ function init() {
         zNear: 1,
         zFar: 1000.0
     });
-    scene.add(camera);
+    scene.addChild(camera);
 
-    let directionalLight = new GLBoost.DirectionalLight(new GLBoost.Vector3(1.2, 1.2, 1.2), new GLBoost.Vector3(-1, -1, -1));
-    scene.add( directionalLight );
+    let directionalLight1 = glBoostContext.createDirectionalLight(new GLBoost.Vector3(1, 1, 1), new GLBoost.Vector3(-30, -30, -30));
+    scene.addChild( directionalLight1 );
+    let directionalLight2 = glBoostContext.createDirectionalLight(new GLBoost.Vector3(1, 1, 1), new GLBoost.Vector3(30, 30, 30));
+    scene.addChild( directionalLight2 );
 
     // oimo init
     world = new OIMO.World();
@@ -82,17 +90,17 @@ function populate() {
     let w;
     let h;
     let d;
-    let shader = new GLBoost.LambertShader();    
 
     let i = max;
+    let scale = 50;
     
     let glTFLoader = GLBoost.GLTFLoader.getInstance();
-    //let promise = glTFLoader.loadGLTF('duck.gltf', 50); // duck.gltf
-    let promise = glTFLoader.loadGLTF('https://rawcdn.githack.com/KhronosGroup/glTF-Sample-Models/77f1a295e65c3a59c7131e6a15552c69817c9449/1.0/Duck/glTF/Duck.gltf', 50); // duck.gltf
+    let promise = glTFLoader.loadGLTF(glBoostContext, 'https://rawcdn.githack.com/KhronosGroup/glTF-Sample-Models/77f1a295e65c3a59c7131e6a15552c69817c9449/1.0/Duck/glTF/Duck.gltf', null); // duck.gltf
 
-    promise.then(function(mesh) {
-        let mesh0 = mesh.searchElement("LOD3spShape-lib");
-        
+    promise.then(function(group) {
+        group.scale = new GLBoost.Vector3(scale, scale, scale);
+        let mesh0 = group.searchElement("LOD3spShape-lib");
+
         while (i--){
             x = -50 + Math.random()*100;
             y = 200 + Math.random()*100;
@@ -108,36 +116,38 @@ function populate() {
                 move: true,
                 world: world
             });
-            let geometry = new GLBoost.Sphere(w*0.5, 12, 12);
+            let geometry = glBoostContext.createSphere(w*0.5, 12, 12);
             geometry._primitiveType = GLBoost.LINE_STRIP;
-            wireMeshs[i] = new GLBoost.Mesh(geometry, mesh0.material);
+            wireMeshs[i] = glBoostContext.createMesh(geometry);
             wireMeshs[i].opacity = 0.5;
-            let mesh = new GLBoost.Mesh(mesh0.geometry, mesh0.material);
+            let mesh = glBoostContext.createMesh(mesh0.geometry);
+            mesh.scale = new GLBoost.Vector3(scale, scale, scale);
             mesh.translate = new GLBoost.Vector3(-w*0.1, -w*0.35, 0);
-            groupMeshs[i] = new GLBoost.Group();
+            groupMeshs[i] = glBoostContext.createGroup();
             groupMeshs[i].addChild(mesh);
-            scene.add(groupMeshs[i]);
-            scene.add(wireMeshs[i]);
+            scene.addChild(groupMeshs[i]);
+            scene.addChild(wireMeshs[i]);
         }
 
         // loop
-        scene.prepareForRender();
+        expression = glBoostContext.createExpressionAndRenderPasses(1);
+        expression.renderPasses[0].scene = scene;
+        expression.prepareToRender();
         loop();
     });
 }
 
 function addStaticBox(size, position, rotation, spec) {
-    let geo1 = new GLBoost.Cube(new GLBoost.Vector3(size[0], size[1], size[2]), new GLBoost.Vector3(0.5, 0.5, 0.5));
-    let shader = new GLBoost.LambertShader();    
-    let material = new GLBoost.ClassicMaterial();
-    material.shader = shader;
-    let mground1 = new GLBoost.Mesh(geo1, material);
+    let geo1 = glBoostContext.createCube(new GLBoost.Vector3(size[0], size[1], size[2]), new GLBoost.Vector4(0.5, 0.5, 0.5, 1.0));
+    let material = glBoostContext.createClassicMaterial();
+    material.shaderClass = GLBoost.LambertShader;
+    let mground1 = glBoostContext.createMesh(geo1, material);
     mground1.translate = new GLBoost.Vector3(position[0], position[1], position[2]);
     if ( spec ) {
         mground1.opacity = 0.5;
     }
     mground1.dirty = true;
-    scene.add( mground1 );
+    scene.addChild( mground1 );
 }
 
 function clearMesh(){
@@ -151,7 +161,7 @@ function clearMesh(){
 
 function loop() {
     renderer.clearCanvas();
-    renderer.draw(scene);
+    renderer.draw(expression);
     
     world.step();
     
