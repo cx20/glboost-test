@@ -50,7 +50,7 @@ function WaveMachine() {
     box.SetAsBoxXYCenterAngle(
         1,
         2,
-        new b2Vec2(windowWidth / 2 / METER, -windowHeight / 4 / METER),
+        new b2Vec2(windowWidth / METER / 2, -windowHeight / METER / 2),
         0
     );
     let particleGroupDef = new b2ParticleGroupDef();
@@ -72,34 +72,32 @@ function testSwitch(testName) {
 
 // for glboost.js
 let canvas;
+let glBoostContext;
 let renderer;
 let scene;
 let camera;
 let particlesPosition = [];
 let particlesColors = [];
 let particleGeometry;
+let expression;
 
 function init() {
     testSwitch("WaveMachine");
     canvas = document.getElementById("world");
+    glBoostContext = new GLBoost.GLBoostMiddleContext(canvas);
 
-    renderer = new GLBoost.Renderer({
+    renderer = glBoostContext.createRenderer({
         canvas: canvas,
-        clearColor: {
-            red: 0.0,
-            green: 0.0,
-            blue: 0.0,
-            alpha: 1
-        }
+        clearColor: {red: 0, green: 0, blue: 0, alpha: 1}
     });
     renderer.resize(windowWidth, windowHeight);
     let gl = renderer.glContext;
     gl.disable(gl.DEPTH_TEST);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
 
-    scene = new GLBoost.Scene();
+    scene = glBoostContext.createScene();
 
-    camera = new GLBoost.Camera({
+    camera = glBoostContext.createPerspectiveCamera({
         eye: new GLBoost.Vector3(0.0, 1.5, 10.0),
         center: new GLBoost.Vector3(0.0, 1.5, 0.0),
         up: new GLBoost.Vector3(0.0, 1.0, 0.0)
@@ -109,10 +107,10 @@ function init() {
         zNear: 0.1,
         zFar: 500.0
     });
-    scene.add(camera);
+    scene.addChild(camera);
 
-    let directionalLight = new GLBoost.DirectionalLight(new GLBoost.Vector3(0.3, 0.3, 0.3), new GLBoost.Vector3(0, 0, -1), '#world');
-    scene.add(directionalLight);
+    let directionalLight = glBoostContext.createDirectionalLight(new GLBoost.Vector3(0.3, 0.3, 0.3), new GLBoost.Vector3(0, 0, -1));
+    scene.addChild(directionalLight);
 
     let particles = world.particleSystems[0].GetPositionBuffer();
 
@@ -125,27 +123,27 @@ function init() {
         //particlesPosition.push(new GLBoost.Vector3((Math.random() - 0.5) * wide, (Math.random() - 0.5) * wide, (Math.random() - 0.5) * wide));
     }
 
-    particleGeometry = new GLBoost.Particle({
+    particleGeometry = glBoostContext.createParticle({
         position: particlesPosition,
         color: particlesColors
-    }, 0.2, 0.2, null, GLBoost.DYNAMIC_DRAW, '#world');
+    }, 0.2, 0.2, null, GLBoost.DYNAMIC_DRAW);
 
-    let material = new GLBoost.ClassicMaterial('#world');
-    //let texture = new GLBoost.Texture('/assets/S/0/o/W/S0oWl.png', '#world'); // fireball.png
-    //let texture = new GLBoost.Texture('/assets/Q/p/2/z/Qp2zo.png', '#world'); // iceball.png
-    let texture = new GLBoost.Texture('../../assets/4/a/w/f/4awfi.png', '#world'); // ball.png
-    material.diffuseTexture = texture;
-    let particle = new GLBoost.Mesh(particleGeometry, material);
-    scene.add(particle);
+    let material = glBoostContext.createClassicMaterial();
+    let texture = glBoostContext.createTexture('../../assets/4/a/w/f/4awfi.png'); // ball.png
+    material.setTexture(texture);
+    let particle = glBoostContext.createMesh(particleGeometry, material);
+    scene.addChild(particle);
 
-    scene.prepareForRender();
+    expression = glBoostContext.createExpressionAndRenderPasses(1);
+    expression.renderPasses[0].scene = scene;
+    expression.prepareToRender();
 }
 
 
 let render = function() {
     renderer.clearCanvas();
-    renderer.draw(scene);
-
+    renderer.draw(expression);
+    
     //let rotateMatrix = GLBoost.Matrix33.rotateY(-0.01);
     let rotateMatrix = GLBoost.Matrix33.rotateY(0);
     let rotatedVector = rotateMatrix.multiplyVector(camera.eye);
@@ -172,5 +170,7 @@ let render = function() {
 let gravity = new b2Vec2(0, 10);
 world = new b2World(gravity);
 
-init();
-render();
+window.onload = function() {
+    init();
+    render();
+}
