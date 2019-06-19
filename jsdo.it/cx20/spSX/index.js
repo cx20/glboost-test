@@ -21,7 +21,7 @@ function WaveMachine() {
     wg.SetAsBoxXYCenterAngle(
         windowWidth / METER / 2,
         0.05,
-        new b2Vec2(windowWidth / METER / 2, windowHeight / METER + 0.05),
+        new b2Vec2(windowWidth / METER / 2, windowHeight / (METER*1.5) ),
         0
     );
     bobo.CreateFixtureFromShape(wg, 5);
