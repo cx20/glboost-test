@@ -9,18 +9,16 @@ let height = window.innerHeight;
 let cw = width;
 let ch = height;
 
-let renderer = new GLBoost.Renderer({
-    canvas: canvas,
-    clearColor: {red: 0.0, green: 0.0, blue: 0.0, alpha: 1}
-});
+let glBoostContext = new GLBoost.GLBoostMiddleContext(canvas);
+let renderer = glBoostContext.createRenderer({ canvas: canvas, clearColor: {red:0, green:0, blue:0, alpha:1}});
 renderer.resize(width, height);
 let gl = renderer.glContext;
 gl.disable(gl.DEPTH_TEST);
 gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
 
-let scene = new GLBoost.Scene();
+let scene = glBoostContext.createScene();
 
-let camera = new GLBoost.Camera({
+let camera = glBoostContext.createPerspectiveCamera({
     eye: new GLBoost.Vector3(0.0, 1.5, 10.0),
     center: new GLBoost.Vector3(0.0, 1.5, 0.0),
     up: new GLBoost.Vector3(0.0, 1.0, 0.0)
@@ -30,10 +28,12 @@ let camera = new GLBoost.Camera({
     zNear: 0.1,
     zFar: 500.0
 });
-scene.add(camera);
+scene.addChild(camera);
 
-let directionalLight = new GLBoost.DirectionalLight(new GLBoost.Vector3(0.5, 0.5, 0.5), new GLBoost.Vector3(0, 0, -200), '#world');
-scene.add(directionalLight);
+let directionalLight = glBoostContext.createDirectionalLight(new GLBoost.Vector3(1, 1, 1), new GLBoost.Vector3(30, 30, 30));
+scene.addChild(directionalLight);
+let directionalLight2 = glBoostContext.createDirectionalLight(new GLBoost.Vector3(1, 1, 1), new GLBoost.Vector3(-30, -30, -30));
+scene.addChild(directionalLight2);
 
 let attributeName = 'particlesVelocity';
 class MyCustomShaderSource {
@@ -53,7 +53,7 @@ class MyCustomShaderSource {
         let shaderText = '';
         shaderText += '  vec3 cameraPos = cameraEachPointPos.xyz;\n';
         shaderText += '  gl_Position = projectionMatrix * vec4(cameraPos.x+mouse.x*5.0, cameraPos.y-mouse.y*5.0, cameraPos.z, 1.0);\n';
-
+        
         return shaderText;
     }
 
@@ -80,8 +80,9 @@ class MyCustomShaderSource {
 }
 
 class MyCustomShader extends GLBoost.HalfLambertShader {
-    constructor(canvas, ParticleShaderSource) {
-        super(canvas);
+    constructor(glBoostContext, basicShader, ParticleShaderSource) {
+        super(glBoostContext, basicShader);
+
         if (ParticleShaderSource) {
             MyCustomShader.mixin(ParticleShaderSource);
             MyCustomShader.mixin(MyCustomShaderSource);
@@ -91,8 +92,8 @@ class MyCustomShader extends GLBoost.HalfLambertShader {
         this._mx = 0;
         this._my = 0;
     }
-    setUniforms(gl, glslProgram, material) {
-        super.setUniforms(gl, glslProgram, material);
+    setUniforms(gl, glslProgram, expression, material, camera, mesh, lights) {
+        super.setUniforms(gl, glslProgram, expression, material, camera, mesh, lights);
 
         gl.uniform1f(glslProgram.time, this._time);
         gl.uniform2fv(glslProgram.mouse, [this._mx, this._my]);
@@ -122,36 +123,30 @@ for (let i = 0; i < 3000; i++) {
     let vertex = new GLBoost.Vector3(x, y, z);
 
     if (vertex.length() < 5) {
-        particlesColors.push(new GLBoost.Vector4(Math.random(), Math.random(), Math.random(), 1));
+        particlesColors.push(new GLBoost.Vector4(Math.random(), Math.random(), Math.random(), 1.0));
         particlesPosition.push(new GLBoost.Vector3(x * 0.5, y * 0.5 + 2, z * 0.5));
         particlesVelocity.push(new GLBoost.Vector3((Math.random() - 0.5) * 4 / 10, Math.random() * 10 / 10, (Math.random() - 0.5) * 4 / 10));
     }
 }
 
-/*
-let particleGeometry = new GLBoost.Particle({
+let particleGeometry = glBoostContext.createParticle({
     position: particlesPosition,
     particlesVelocity: particlesVelocity,
     color: particlesColors
-}, 0.3, 0.3, null, '#world');
-*/
-let particleGeometry = new GLBoost.Particle({
-    position: particlesPosition,
-    particlesVelocity: particlesVelocity,
-    color: particlesColors
-}, 0.3, 0.3, null, GLBoost.DYNAMIC_DRAW, '#world');
+}, 0.3, 0.3, null, GLBoost.STATIC_DRAW);
 
-let material = new GLBoost.ClassicMaterial('#world');
-material.shader = new MyCustomShader('#world');
+let material = glBoostContext.createClassicMaterial();
+material.shaderClass = MyCustomShader;
 
-let texture = new GLBoost.Texture('../../assets/4/a/w/f/4awfi.png', '#world'); // ball.png
-//let texture = new GLBoost.Texture('ball.png', '#world'); // ball.png
-material.diffuseTexture = texture;
-let particle = new GLBoost.Mesh(particleGeometry, material);
+let texture = glBoostContext.createTexture('../../assets/4/a/w/f/4awfi.png'); // ball.png
+material.setTexture(texture);
+let particle = glBoostContext.createMesh(particleGeometry, material);
 
-scene.add(particle);
+scene.addChild(particle);
 
-scene.prepareForRender();
+var expression = glBoostContext.createExpressionAndRenderPasses(1);
+expression.renderPasses[0].scene = scene;
+expression.prepareToRender();
 
 // mouse
 function mouseMove(e){
@@ -161,14 +156,13 @@ function mouseMove(e){
 
 let render = function() {
     renderer.clearCanvas();
-    renderer.draw(scene);
+    renderer.draw(expression);
 
-    //let rotateMatrix = GLBoost.Matrix33.rotateY(-0.10);
-    let rotateMatrix = GLBoost.Matrix33.rotateY(-0.05);
+    let rotateMatrix = GLBoost.Matrix33.rotateY(-1.0);
     let rotatedVector = rotateMatrix.multiplyVector(camera.eye);
     camera.eye = rotatedVector;
 
-    let myCustomShader = particle.material.shader;
+    let myCustomShader = particle.material.shaderInstance;
     myCustomShader.increaseTime(0.016);
     myCustomShader.setMousePosition(mx, my);
     //myCustomShader.dirty = true;
