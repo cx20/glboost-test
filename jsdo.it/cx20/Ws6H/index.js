@@ -1,8 +1,6 @@
-﻿var X_START_POS = 0;
-var Y_START_POS = 0;
-var Z_START_POS = 0;
-let width = window.innerWidth;
-let height = window.innerHeight;
+﻿let X_START_POS = 0;
+let Y_START_POS = 0;
+let Z_START_POS = 0;
 
 // ‥‥‥‥〓〓〓〓〓〓〓‥‥□□□
 // ‥‥○○〓〓〓〓〓〓〓〓‥□□□
@@ -20,8 +18,7 @@ let height = window.innerHeight;
 // ‥‥■■■■■■■■■■■■■■
 // ‥■■■■■■■■■■‥‥‥‥‥
 // ‥■‥‥■■■■‥‥‥‥‥‥‥‥
-
-var dataSet = [
+let dataSet = [
     "無","無","無","無","赤","赤","赤","赤","赤","赤","赤","無","無","肌","肌","肌",
     "無","無","白","白","赤","赤","赤","赤","赤","赤","赤","赤","無","肌","肌","肌",
     "無","無","白","白","無","白","白","白","白","白","白","白","白","赤","肌","肌",
@@ -42,7 +39,7 @@ var dataSet = [
 
 function getRgbColor( c )
 {
-    var colorHash = {
+    let colorHash = {
         "無":"#000000",
         "白":"#ffffff",
         "肌":"#ffcccc",
@@ -59,12 +56,12 @@ function getRgbColor( c )
 
 function getSingleColorDepth( c, rgbType )
 {
-    var result = 0;
-    var rgb = getRgbColor( c );
+    let result = 0;
+    let rgb = getRgbColor( c );
     rgb = rgb.replace("#", "");
-    var r = parseInt( "0x" + rgb.substr( 0, 2 ), 16 );
-    var g = parseInt( "0x" + rgb.substr( 2, 2 ), 16 );
-    var b = parseInt( "0x" + rgb.substr( 4, 2 ), 16 );
+    let r = parseInt( "0x" + rgb.substr( 0, 2 ), 16 );
+    let g = parseInt( "0x" + rgb.substr( 2, 2 ), 16 );
+    let b = parseInt( "0x" + rgb.substr( 4, 2 ), 16 );
     switch ( rgbType )
     {
     case 'r':
@@ -80,40 +77,41 @@ function getSingleColorDepth( c, rgbType )
     return result;
 }
 
-var canvas = document.getElementById("world");
-
-var renderer = new GLBoost.Renderer({ canvas: canvas, clearColor: {red:0, green:0, blue:0, alpha:1}});
+let canvas = document.getElementById("world");
+let width = window.innerWidth;
+let height = window.innerHeight;
+let glBoostContext = new GLBoost.GLBoostMiddleContext(canvas);
+let renderer = glBoostContext.createRenderer({ canvas: canvas, clearColor: {red:0, green:0, blue:0, alpha:1}});
 renderer.resize(width, height);
 
-var scene = new GLBoost.Scene();
+let scene = glBoostContext.createScene();
+let positions = [];
+let colors = [];
 
-var positions = [];
-var colors = [];
-for ( var i = 0; i < 100000; i++ ) {
-    var x = (Math.random() - 0.5) * 2 * 10;
-    var y = (Math.random() - 0.5) * 2 * 10;
-    var z = (Math.random() - 0.5) * 2 * 10;
-    var vector = new  GLBoost.Vector3(x, y, z);
+for ( let i = 0; i < 100000; i++ ) {
+    let x = (Math.random() - 0.5) * 2 * 10;
+    let y = (Math.random() - 0.5) * 2 * 10;
+    let z = (Math.random() - 0.5) * 2 * 10;
+    let vector = new  GLBoost.Vector3(x, y, z);
     if ( vector.length() < 10 ) {
-        var vectorA = new GLBoost.Vector3(x + Math.random() * 1 -0.5, y + Math.random() * 1 -0.5, z + Math.random() * 1 -0.5);
-        var vectorB = new GLBoost.Vector3(x + Math.random() * 1 -0.5, y + Math.random() * 1 -0.5, z + Math.random() * 1 -0.5);
-        var vectorC = new GLBoost.Vector3(x + Math.random() * 1 -0.5, y + Math.random() * 1 -0.5, z + Math.random() * 1 -0.5);
-        var colorA = new GLBoost.Vector3(Math.random(), Math.random(), Math.random());
-        var colorB = new GLBoost.Vector3(Math.random(), Math.random(), Math.random());
-        var colorC = new GLBoost.Vector3(Math.random(), Math.random(), Math.random());
+        let vectorA = new GLBoost.Vector3(x + Math.random() * 1 -0.5, y + Math.random() * 1 -0.5, z + Math.random() * 1 -0.5);
+        let vectorB = new GLBoost.Vector3(x + Math.random() * 1 -0.5, y + Math.random() * 1 -0.5, z + Math.random() * 1 -0.5);
+        let vectorC = new GLBoost.Vector3(x + Math.random() * 1 -0.5, y + Math.random() * 1 -0.5, z + Math.random() * 1 -0.5);
+        let colorA = new GLBoost.Vector3(Math.random(), Math.random(), Math.random());
+        let colorB = new GLBoost.Vector3(Math.random(), Math.random(), Math.random());
+        let colorC = new GLBoost.Vector3(Math.random(), Math.random(), Math.random());
         positions.push( vectorA );
         positions.push( vectorB );
         positions.push( vectorC );
-
-        var x0 = (Math.floor(x*1.5) + 10);
-        var y0 = (Math.floor(y*1.5) + 10);
-        var z0 = (Math.floor(z*1.5) + 10);
-        console.log( x0 + ", " + y0 + ", " + z0 );
+        let x0 = (Math.floor(x*1.5) + 10);
+        let y0 = (Math.floor(y*1.5) + 10);
+        let z0 = (Math.floor(z*1.5) + 10);
+        //console.log( x0 + ", " + y0 + ", " + z0 );
         if ( x0 >= (0+X_START_POS) && y0 >= (0+Y_START_POS) 
           && x0 < (16+X_START_POS) && y0 < (16+Y_START_POS) ) {
-            var pos = (x0-X_START_POS) + ((15-y0)-Y_START_POS) * 16;
+            let pos = (x0-X_START_POS) + ((15-y0)-Y_START_POS) * 16;
             if ( dataSet[pos] != "無") {
-                var c = dataSet[pos];
+                let c = dataSet[pos];
                 colorA.x = getSingleColorDepth(c, "r" );
                 colorA.y = getSingleColorDepth(c, "g" );
                 colorA.z = getSingleColorDepth(c, "b" );
@@ -131,16 +129,16 @@ for ( var i = 0; i < 100000; i++ ) {
     }
 }
 
-var geometry = new GLBoost.Geometry(canvas);
+let geometry = glBoostContext.createGeometry();
 geometry.setVerticesData({
     position: positions,
     color: colors
 });
-var mesh = new GLBoost.Mesh(geometry);
 
-scene.add( mesh );
+let mesh = glBoostContext.createMesh(geometry);
+scene.addChild(mesh);
 
-var camera = new GLBoost.Camera({
+let camera = glBoostContext.createPerspectiveCamera({
     eye: new GLBoost.Vector3(0.0, 0.0, 30.0),
     center: new GLBoost.Vector3(0.0, 0.0, 0.0),
     up: new GLBoost.Vector3(0.0, 1.0, 0.0)
@@ -151,19 +149,21 @@ var camera = new GLBoost.Camera({
     zFar: 1000.0
 });
 
-scene.add( camera );
+scene.addChild( camera );
 
-scene.prepareForRender();
+let expression = glBoostContext.createExpressionAndRenderPasses(1);
+expression.renderPasses[0].scene = scene;
+expression.prepareToRender();
 
 (function(){
-    renderer.clearCanvas();
-    renderer.draw(scene);
-    var rotateMatrixX = GLBoost.Matrix33.rotateX(-0.00);
-    var rotateMatrixY = GLBoost.Matrix33.rotateY(-0.02);
-    var rotatedVector = rotateMatrixX.multiplyVector(camera.eye);
+    //renderer.clearCanvas();
+    renderer.draw(expression);
+
+    let rotateMatrixX = GLBoost.Matrix33.rotateX(0.0);
+    let rotateMatrixY = GLBoost.Matrix33.rotateY(-0.5);
+    let rotatedVector = rotateMatrixX.multiplyVector(camera.eye);
     rotatedVector = rotateMatrixY.multiplyVector(rotatedVector);
     camera.eye = rotatedVector;
 
     requestAnimationFrame(arguments.callee);
 })();
-
