@@ -137,6 +137,13 @@ let particleGeometry = glBoostContext.createParticle({
 
 let material = glBoostContext.createClassicMaterial();
 material.shaderClass = MyCustomShader;
+material.states = {
+    enable: [gl.BLEND],
+    functions: {
+        "blendFuncSeparate": [gl.SRC_ALPHA, gl.ONE, gl.SRC_ALPHA, gl.ONE],
+    }
+};
+material.globalStatesUsage = GLBoost.GLOBAL_STATES_USAGE_IGNORE;
 
 let texture = glBoostContext.createTexture('../../assets/4/a/w/f/4awfi.png'); // ball.png
 material.setTexture(texture);
