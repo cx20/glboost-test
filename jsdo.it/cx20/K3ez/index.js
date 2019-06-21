@@ -1,47 +1,34 @@
-﻿let stats;
-let width = window.innerWidth;
+﻿let width = window.innerWidth;
 let height = window.innerHeight;
 
 let canvas = document.getElementById("world");
 let glBoostContext = new GLBoost.GLBoostMiddleContext(canvas);
 
 let renderer = glBoostContext.createRenderer({
-  clearColor: {
-    red: 0.0,
-    green: 0.0,
-    blue: 0.0,
-    alpha: 1
-  }
+    clearColor: {red: 0.0, green: 0.0, blue: 0.0, alpha: 1}
 });
 renderer.resize(width, height);
-
-stats = new Stats();
-stats.setMode( 0 ); // 0: fps, 1: ms, 2: mb
-stats.domElement.style.position = "fixed";
-stats.domElement.style.left     = "5px";
-stats.domElement.style.top      = "5px";
-document.body.appendChild(stats.domElement);
-
+let gl = renderer.glContext;
 let scene = glBoostContext.createScene();
 
 let directionalLight = glBoostContext.createDirectionalLight(new GLBoost.Vector3(0.4, 0.4, 0.4), new GLBoost.Vector3(-10, -1, -10));
 scene.addChild( directionalLight );
-let pointLight1 = glBoostContext.createDirectionalLight(new GLBoost.Vector3(0.6, 0.6, 0.6), new GLBoost.Vector3(0, -100, -100));
+let pointLight1 = glBoostContext.createDirectionalLight(new GLBoost.Vector3(0.6, 0.6, 0.6), new GLBoost.Vector3(0, 100, -100));
 scene.addChild( pointLight1 );
-let pointLight2 = glBoostContext.createDirectionalLight(new GLBoost.Vector3(0.5, 0.5, 0.5), new GLBoost.Vector3(50, 50, -100));
+let pointLight2 = glBoostContext.createDirectionalLight(new GLBoost.Vector3(1.0, 1.0, 1.0), new GLBoost.Vector3(50, -50, -100));
 scene.addChild( pointLight2 );
 
 let material1 = glBoostContext.createClassicMaterial();
-material1.shaderClass = GLBoost.PhongShader;
 let texture1 = glBoostContext.createTexture('earth_atmos_1024.jpg'); // earth_atmos_1024.jpg
 material1.setTexture(texture1);
-material1.specularColor = new GLBoost.Vector4(0.5, 0.5, 0.5, 1);
+material1.shaderClass = GLBoost.HalfLambertShader;
 let geometry1 = glBoostContext.createSphere(20, 24, 24);
 let earth = glBoostContext.createMesh(geometry1, material1);
 scene.addChild(earth);
 
 let material2 = glBoostContext.createClassicMaterial();
-material1.shaderClass = GLBoost.HalfLambertShader;
+material2.shaderClass = GLBoost.HalfLambertShader;
+
 let texture2 = glBoostContext.createTexture('earth_clouds_1024.png'); // earth_clouds_1024.png
 material2.setTexture(texture2);
 let geometry2 = glBoostContext.createSphere(20*1.01, 24, 24);
@@ -78,8 +65,6 @@ let render = function() {
 
     cloud.quaternion = GLBoost.Quaternion.axisAngle(axis, GLBoost.MathUtil.radianToDegree(angle2));
     angle2 += 0.015;
-    
-    stats.update();
 
     requestAnimationFrame(render);
 };

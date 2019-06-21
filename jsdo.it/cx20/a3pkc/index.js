@@ -24,36 +24,20 @@ let geometry1 = glBoostContext.createSphere(20, 24, 24);
 let mars = glBoostContext.createMesh(geometry1, material1);
 scene.addChild(mars);
 
-/*
-let material2 = glBoostContext.createClassicMaterial();
-let texture2 = glBoostContext.createTexture('mars_clouds_1024.png'); // mars_clouds_1024.png
-material2.setTexture(texture2);
-material2.shaderClass = GLBoost.HalfLambertShader;
-let geometry2 = glBoostContext.createSphere(20*1.01, 24, 24);
-let cloud = glBoostContext.createMesh(geometry2, material2);
-scene.addChild(cloud);
-*/
-
-var camera = glBoostContext.createPerspectiveCamera({
+let camera = glBoostContext.createPerspectiveCamera({
     eye: new GLBoost.Vector3(0.0, 0.0, 60.0),
     center: new GLBoost.Vector3(0.0, 0.0, 0.0),
     up: new GLBoost.Vector3(0.0, 1.0, 0.0)
 }, {
     fovy: 45.0,
-    aspect: 1.0,
+    aspect: width/height,
     zNear: 0.1,
     zFar: 1000.0
 });
 
 scene.addChild(camera);
-
-// create an expression (which is composed of several rendering passes)
 let expression = glBoostContext.createExpressionAndRenderPasses(1);
-
-// set scene to render pass of expression
 expression.renderPasses[0].scene = scene;
-
-// call this method before rendering
 expression.prepareToRender();
 
 let angle = 1;
