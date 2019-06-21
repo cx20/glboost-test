@@ -9,12 +9,8 @@ renderer.resize(width, height);
 
 let scene = glBoostContext.createScene();
 
-let directionalLight = glBoostContext.createDirectionalLight(new GLBoost.Vector3(0.4, 0.4, 0.4), new GLBoost.Vector3(-10, -1, -10));
+let directionalLight = glBoostContext.createDirectionalLight(new GLBoost.Vector3(1.0, 1.0, 1.0), new GLBoost.Vector3(50, -50, -100));
 scene.addChild( directionalLight );
-let pointLight1 = glBoostContext.createDirectionalLight(new GLBoost.Vector3(0.6, 0.6, 0.6), new GLBoost.Vector3(0, 100, -100));
-//scene.addChild( pointLight1 );
-let pointLight2 = glBoostContext.createDirectionalLight(new GLBoost.Vector3(1.0, 1.0, 1.0), new GLBoost.Vector3(50, -50, -100));
-scene.addChild( pointLight2 );
 
 let material1 = glBoostContext.createClassicMaterial();
 let texture1 = glBoostContext.createTexture('jupiter.jpg');
