@@ -55,9 +55,11 @@ function init() {
     let material = glBoostContext.createClassicMaterial();
     material.shaderClass = GLBoost.PhongShader;
     let mground1 = glBoostContext.createMesh(geo1, material);
-    mground1.translate.y = -50;
+    //mground1.translate.y = -50;
+    let tmpVector3 = mground1.translate;
+    mground1.translate = new GLBoost.Vector3(tmpVector3.x, tmpVector3.y - 50, tmpVector3.z);
     mground1.dirty = true;
-    //scene.addChild( mground1 );
+    scene.addChild( mground1 );
 
     // oimo init
     world = new OIMO.World();
