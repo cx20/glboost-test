@@ -70,8 +70,10 @@ scene.addChild(meshAxis);
 scene.addChild(meshGrid);
 scene.addChild(meshParticle);
 
-var directionalLight = glBoostContext.createDirectionalLight(new GLBoost.Vector3(1, 1, 1), new GLBoost.Vector3(0, 0, -1));
-scene.addChild( directionalLight );
+var directionalLight1 = glBoostContext.createDirectionalLight(new GLBoost.Vector3(1, 1, 1), new GLBoost.Vector3(60, 30, 30));
+scene.addChild( directionalLight1 );
+var directionalLight2 = glBoostContext.createDirectionalLight(new GLBoost.Vector3(1, 1, 1), new GLBoost.Vector3(-60, -30, -30));
+scene.addChild( directionalLight2 );
 
 var camera = glBoostContext.createPerspectiveCamera({
   eye: new GLBoost.Vector3(0.0, 0.0, 3.0),
