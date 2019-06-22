@@ -10,9 +10,6 @@ function init()
     
     let scene = glBoostContext.createScene();
     
-    let directionalLight1 = glBoostContext.createDirectionalLight(new GLBoost.Vector3(1.5, 1.5, 1.5), new GLBoost.Vector3(-45, -45, 0));
-    scene.addChild( directionalLight1 );
-    
     let camera = glBoostContext.createPerspectiveCamera({
         eye: new GLBoost.Vector3(0.0, 0.5, 1),
         center: new GLBoost.Vector3(0.0, 0.0, 0.0),
@@ -20,7 +17,7 @@ function init()
     }, {
         fovy: 45.0,
         aspect: width/height,
-        zNear: 0.1,
+        zNear: 0.001,
         zFar: 1000.0
     });
     camera.cameraController = glBoostContext.createCameraController();
@@ -60,11 +57,6 @@ function init()
     let indices= [];
     let i = 0;
     for ( let t = 0; t <= MAX; t += 0.1 ) {
-/*
-        let x = 0.5 * Math.cos(2 * Math.PI * i / MAX * A);
-        let y = 0.5 * Math.sin(2 * Math.PI * i / MAX * B);
-        let z = 0.5 * Math.sin(2 * Math.PI * i / MAX * A);
-*/
         let x = R * Math.sin(2 * Math.PI * t / MAX * A + alpha);
         let y = R * Math.sin(2 * Math.PI * t / MAX * B + beta);
         let z = R * Math.sin(2 * Math.PI * t / MAX * C + gamma);

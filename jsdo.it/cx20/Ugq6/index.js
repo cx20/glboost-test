@@ -37,9 +37,6 @@ function init()
     
     let scene = glBoostContext.createScene();
     
-    let directionalLight1 = glBoostContext.createDirectionalLight(new GLBoost.Vector3(1.5, 1.5, 1.5), new GLBoost.Vector3(-45, -45, 0));
-    scene.addChild( directionalLight1 );
-    
     let camera = glBoostContext.createPerspectiveCamera({
         eye: new GLBoost.Vector3(0.0, 50, 200),
         center: new GLBoost.Vector3(0.0, 0.0, 0.0),
@@ -47,7 +44,7 @@ function init()
     }, {
         fovy: 45.0,
         aspect: 1.0,
-        zNear: 0.1,
+        zNear: 0.001,
         zFar: 1000.0
     });
     camera.cameraController = glBoostContext.createCameraController();
