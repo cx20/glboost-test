@@ -21,7 +21,11 @@ Test of GLBoost
 
 [![GLBoost で火星を表示させてみるテスト](jsdo.it/cx20/assets/screenshot/a3pkc.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/a3pkc/)
 
+<!--
 [![GLBoost で木星を表示させてみるテスト](jsdo.it/cx20/assets/screenshot/6wiY.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/6wiY/)
+-->
+
+[![GLBoost で木星を表示させてみるテスト（その２）](jsdo.it/cx20/assets/screenshot/MoO1.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/MoO1/)
 
 ### 物理演算
 
