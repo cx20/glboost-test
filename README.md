@@ -49,6 +49,8 @@ Test of GLBoost
 
 [![GLBoost で glTF 2.0 モデルを表示してみるテスト（その１２）](jsdo.it/cx20/assets/screenshot/Q4Pa.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/Q4Pa/)
 
+[![GLBoost で glTF 2.0 モデルを表示してみるテスト（その２１）](jsdo.it/cx20/assets/screenshot/QzHY.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/QzHY/)
+
 ### ３次元曲線
 
 [![GLBoost でリサージュ図形を描いてみるテスト](jsdo.it/cx20/assets/screenshot/WO1O.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/WO1O/)
