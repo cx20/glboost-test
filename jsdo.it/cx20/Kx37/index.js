@@ -29,35 +29,30 @@ function init() {
 
     scene = glBoostContext.createScene();
     renderer  = glBoostContext.createRenderer({
-      clearColor: {
-        red: 0.0,
-        green: 0.0,
-        blue: 0.0,
-        alpha: 1
-      }
+      clearColor: {red: 0.0, green: 0.0, blue: 0.0, alpha: 1}
     });
     renderer.resize(width, height);
     camera = glBoostContext.createPerspectiveCamera({
-        eye: new GLBoost.Vector3(0, 200, 400),
+        eye: new GLBoost.Vector3(0, 150, 300),
         center: new GLBoost.Vector3(0.0, 0.0, 0.0),
         up: new GLBoost.Vector3(0.0, 1.0, 0.0)
     }, {
         fovy: 70.0,
         aspect: width/height,
-        zNear: 1,
-        zFar: 1000.0
+        zNear: 0.01,
+        zFar: 10000.0
     });
+    camera.cameraController = glBoostContext.createCameraController();
     scene.addChild(camera);
 
-    let directionalLight1 = glBoostContext.createDirectionalLight(new GLBoost.Vector3(1, 1, 1), new GLBoost.Vector3(-30, -30, -30));
+    let directionalLight1 = glBoostContext.createDirectionalLight(new GLBoost.Vector4(1, 1, 1, 1), new GLBoost.Vector3(-30, -30, -30));
     scene.addChild( directionalLight1 );
-    let directionalLight2 = glBoostContext.createDirectionalLight(new GLBoost.Vector3(1, 1, 1), new GLBoost.Vector3(30, 30, 30));
+    let directionalLight2 = glBoostContext.createDirectionalLight(new GLBoost.Vector4(1, 1, 1, 1), new GLBoost.Vector3(30, 30, 30));
     scene.addChild( directionalLight2 );
 
     // oimo init
     world = new OIMO.World();
     populate();
-
 }
 
 function populate() {
