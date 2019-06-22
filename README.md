@@ -45,6 +45,10 @@ Test of GLBoost
 
 [![GLBoost で PBR を試してみるテスト（その３）](jsdo.it/cx20/assets/screenshot/Ml8A.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/Ml8A/)
 
+### glTF
+
+[![GLBoost で glTF 2.0 モデルを表示してみるテスト（その１２）](jsdo.it/cx20/assets/screenshot/Q4Pa.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/Q4Pa/)
+
 ### ３次元曲線
 
 [![GLBoost でリサージュ図形を描いてみるテスト](jsdo.it/cx20/assets/screenshot/WO1O.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/WO1O/)
@@ -54,3 +58,4 @@ Test of GLBoost
 ### プリミティブ型
 
 [![GLBoost のプリミティブ型を試してみるテスト](jsdo.it/cx20/assets/screenshot/MaoR.jpg)](https://cx20.github.io/glboost-test/jsdo.it/cx20/MaoR/)
+
